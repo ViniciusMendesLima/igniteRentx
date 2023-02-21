@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for rentals/useCases/DevolutionRental/DevolutionRentalUseCase.ts</title>
+    <title>Code coverage report for accounts/useCases/refreshToken/RefreshTokenUseCase.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">rentals/useCases/DevolutionRental</a> DevolutionRentalUseCase.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">accounts/useCases/refreshToken</a> RefreshTokenUseCase.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.88% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/68</span>
+                <span class='fraction'>19/57</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.88% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/68</span>
+                <span class='fraction'>19/57</span>
             </div>
         
             
@@ -120,19 +120,7 @@
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -152,17 +140,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -199,74 +177,63 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { inject, injectable } from "tsyringe";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { sign, verify } from "jsonwebtoken";
+import { inject, injectable } from "tsyringe";
 &nbsp;
-import { ICarsRepository } from "@modules/cars/repositories/ICarsRepository";
-import { Rental } from "@modules/rentals/infra/typeorm/entities/Rental";
-import { IRentalsRepository } from "@modules/rentals/repositories/IRentalsRepository";
+import auth from "@config/auth";
+import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppError";
 &nbsp;
-interface IRequest {
-  id: string;
-  user_id: string;
+interface IPayload {
+  sub: string;
+  email: string;
 }
-&nbsp;
 @injectable()
-class DevolutionRentalUseCase {
+class RefreshTokenUseCase {
 <span class="fstat-no" title="function not covered" >  constructor(</span>
-<span class="cstat-no" title="statement not covered" >    @inject("RentalsRepository")</span>
-<span class="cstat-no" title="statement not covered" >    private rentalsRepository: IRentalsRepository,</span>
-<span class="cstat-no" title="statement not covered" >    @inject("CarsRepository")</span>
-<span class="cstat-no" title="statement not covered" >    private carsRepository: ICarsRepository,</span>
+<span class="cstat-no" title="statement not covered" >    @inject("UsersTokensRepository")</span>
+<span class="cstat-no" title="statement not covered" >    private usersTokensRepository: IUsersTokensRepository,</span>
 <span class="cstat-no" title="statement not covered" >    @inject("DayjsDateProvider")</span>
 <span class="cstat-no" title="statement not covered" >    private dateProvider: IDateProvider</span>
 <span class="cstat-no" title="statement not covered" >  ) {}</span>
-&nbsp;
-  async <span class="fstat-no" title="function not covered" >execute({ id, user_id }: IRequest): Promise&lt;Rental&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    const rental = await this.rentalsRepository.findById(id);</span>
-<span class="cstat-no" title="statement not covered" >    const car = await this.carsRepository.findById(rental.car_id);</span>
-<span class="cstat-no" title="statement not covered" >    const minimum_daily = 1;</span>
+  async <span class="fstat-no" title="function not covered" >execute(token: string): Promise&lt;string&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    const { email, sub } = verify(token, auth.secret_refresh_token) as IPayload;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    if (!rental) {</span>
-<span class="cstat-no" title="statement not covered" >      throw new AppError("Rental does not exists!");</span>
+<span class="cstat-no" title="statement not covered" >    const user_id = sub;</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const userToken =</span>
+<span class="cstat-no" title="statement not covered" >      await this.usersTokensRepository.findBYUserIdAndRefreshToken(</span>
+<span class="cstat-no" title="statement not covered" >        user_id,</span>
+<span class="cstat-no" title="statement not covered" >        token</span>
+<span class="cstat-no" title="statement not covered" >      );</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    if (!userToken) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new AppError("Refresh Token does not exists");</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    const dateNow = this.dateProvider.dateNow();</span>
+<span class="cstat-no" title="statement not covered" >    await this.usersTokensRepository.deleteById(userToken.id);</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    let daily = this.dateProvider.compareInDays(</span>
-<span class="cstat-no" title="statement not covered" >      rental.start_date,</span>
-<span class="cstat-no" title="statement not covered" >      this.dateProvider.dateNow()</span>
+<span class="cstat-no" title="statement not covered" >    const refresh_token = sign({ email }, auth.secret_refresh_token, {</span>
+<span class="cstat-no" title="statement not covered" >      subject: sub,</span>
+<span class="cstat-no" title="statement not covered" >      expiresIn: auth.expires_in_refresh_token,</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const expires_date = this.dateProvider.addDays(</span>
+<span class="cstat-no" title="statement not covered" >      auth.expires_refresh_token_days</span>
 <span class="cstat-no" title="statement not covered" >    );</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    if (daily &lt;= 0) {</span>
-<span class="cstat-no" title="statement not covered" >      daily = minimum_daily;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >    const delay = this.dateProvider.compareInDays(</span>
-<span class="cstat-no" title="statement not covered" >      dateNow,</span>
-<span class="cstat-no" title="statement not covered" >      rental.expected_return_date</span>
-<span class="cstat-no" title="statement not covered" >    );</span>
+<span class="cstat-no" title="statement not covered" >    await this.usersTokensRepository.create({</span>
+<span class="cstat-no" title="statement not covered" >      expires_date,</span>
+<span class="cstat-no" title="statement not covered" >      refresh_token,</span>
+<span class="cstat-no" title="statement not covered" >      user_id,</span>
+<span class="cstat-no" title="statement not covered" >    });</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    let total = 0;</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    if (delay &gt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >      const calculate_fine = delay * car.fine_amount;</span>
-<span class="cstat-no" title="statement not covered" >      total = calculate_fine;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    total += daily * car.daily_rate;</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    rental.end_date = this.dateProvider.dateNow();</span>
-<span class="cstat-no" title="statement not covered" >    rental.total = total;</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    await this.rentalsRepository.create(rental);</span>
-<span class="cstat-no" title="statement not covered" >    await this.carsRepository.updateAvailable(car.id, true);</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >    return rental;</span>
+<span class="cstat-no" title="statement not covered" >    return refresh_token;</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 }
 &nbsp;
-export { DevolutionRentalUseCase };
+export { RefreshTokenUseCase };
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
